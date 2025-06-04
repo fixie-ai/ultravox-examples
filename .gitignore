@@ -1,0 +1,10 @@
+# environment variables
+.env
+.env.production
+.env.local
+
+# node
+node_modules
+
+# macOS-specific files
+.DS_Store
