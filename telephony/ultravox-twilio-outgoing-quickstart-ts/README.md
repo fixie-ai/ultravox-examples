@@ -4,7 +4,7 @@ This TypeScript application demonstrates how to make outgoing phone calls using 
 
 ## Prerequisites
 
-- Node.js (v18 or higher)
+- Node.js (v20 or higher)
 - An Ultravox API key
 - A Twilio account with:
   - Account SID
@@ -21,7 +21,7 @@ cd ultravox-twilio-quickstart
 
 2. **Install dependencies:**
 ```bash
-npm install
+pnpm install
 ```
 
 3. **Configure your environment:**
@@ -41,13 +41,13 @@ DESTINATION_PHONE_NUMBER=the_destination_phone_number_here
 
 4. **Run the application:**
 ```bash
-npm start
+pnpm start
 ```
 
 ## What It Does
 
 The application will:
-1. Create an Ultravox AI call session
+1. Create an Ultravox voice AI call
 2. Initiate a phone call through Twilio to your destination number
 3. Connect the AI agent (Steve) to the call
 4. The AI will introduce itself and start a conversation
@@ -59,7 +59,7 @@ When running successfully, you should see:
 🚀 Creating Ultravox call...
 ✅ Got joinUrl: https://...
 📞 Call initiated: CA1234...
-🎉 Success! AI call in progress
+🎉 Success! Ultravox voice AI call in progress
 ```
 
 ## Customization
@@ -69,7 +69,7 @@ When running successfully, you should see:
 SYSTEM_PROMPT=Your name is Sarah and you're calling to schedule a doctor's appointment.
 ```
 
-**Change AI voice** by editing `src/index.ts` and updating the `voice` property (options: Mark, Jessica, Michael, etc.)
+**Change AI voice** by editing `src/index.ts` and updating the `voice` property (options: Mark, Jessica, Carolina-Spanish, etc.)
 
 ## Try Online
 
@@ -100,9 +100,9 @@ SYSTEM_PROMPT=Your name is Sarah and you're calling to schedule a doctor's appoi
 
 ## Development
 
-- **Development mode:** `npm run dev` (auto-restart on changes)
-- **Build:** `npm run build`
-- **Production:** `npm start`
+- **Development mode:** `pnpm run dev` (auto-restart on changes)
+- **Build:** `pnpm run build`
+- **Production:** `pnpm start`
 
 ## API Documentation
 

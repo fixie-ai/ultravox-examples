@@ -87,7 +87,7 @@ async function createUltravoxCall(): Promise<UltravoxResponse> {
       response.on('end', () => {
         try {
           const result = JSON.parse(responseData);
-          if (response.statusCode !== 200) {
+          if (!response.statusCode || response.statusCode < 200 || response.statusCode >= 300) {
             reject(new Error(`Ultravox API error ${response.statusCode}: ${responseData}`));
           } else {
             resolve(result);
@@ -133,7 +133,7 @@ async function main(): Promise<void> {
     });
 
     console.log('✅ Call initiated:', call.sid);
-    console.log('🎉 Success! AI call in progress');
+    console.log('🎉 Success! Ultravox voice AI call in progress');
     console.log(`📱 Calling ${DESTINATION_PHONE_NUMBER}`);
     console.log('🤖 Steve will introduce himself when answered');
     
@@ -147,7 +147,7 @@ async function main(): Promise<void> {
       console.log('   3. Use E.164 format for phone numbers (+1234567890)');
     }
     
-    process.exit(1);
+    return
   }
 }
 
