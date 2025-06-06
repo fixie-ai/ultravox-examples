@@ -73,7 +73,7 @@ SYSTEM_PROMPT=Your name is Sarah and you're calling to schedule a doctor's appoi
 
 ## Try Online
 
-[**🚀 Open in CodeSandbox**](https://codesandbox.io/s/github/yourusername/ultravox-twilio-quickstart) - Test the code without setting up locally!
+[**🚀 Open in CodeSandbox**](https://codesandbox.io/s/github/fixie-ai/ultravox-examples/tree/main/telephony/ultravox-twilio-outgoing-quickstart-ts) - Test the code without setting up locally!
 
 ## Troubleshooting
 
