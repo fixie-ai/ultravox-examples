@@ -1,10 +1,10 @@
-# Ultravox Twilio Outgoing Call Quickstart
+# Ultravox Twilio Outbound Call Quickstart
 
-This Node.js application demonstrates how to make outgoing phone calls using Ultravox AI and Twilio. It sets up an AI-powered phone call where the AI agent (named Steve) will interact with the call recipient.
+This Node.js application demonstrates how to make outbound phone calls using Ultravox AI and Twilio. It sets up an AI-powered phone call where the AI agent (named Steve) will interact with the call recipient.
 
 ## Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v18 or higher)
 - An Ultravox API key
 - A Twilio account with:
   - Account SID
@@ -17,6 +17,11 @@ This Node.js application demonstrates how to make outgoing phone calls using Ult
 2. Install dependencies:
 ```bash
 pnpm install
+```
+
+or
+```bash
+npm install
 ```
 
 3. Configure your environment:
@@ -40,6 +45,12 @@ const SYSTEM_PROMPT = 'Your name is Steve and you are calling...';
 Start the application using either:
 ```bash
 pnpm start
+```
+
+or 
+
+```bash
+npm start
 ```
 
 The application will:
