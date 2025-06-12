@@ -1,6 +1,6 @@
 # Ultravox Twilio Incoming Call Advanced
 
-This Node.js application demonstrates how to handle incoming Twilio calls and connect them to an Ultravox AI agent. When someone calls your Twilio number, they'll be connected to an AI agent that will interact with them. This example extends the `twilio-incoming-quickstart-js` example in the following ways:
+This Node.js application demonstrates how to handle incoming Twilio calls and connect them to an Ultravox AI agent. When someone calls your Twilio number, they'll be connected to an AI agent that will interact with them. This example extends the `twilio-inbound-quickstart-js` example in the following ways:
 1. Adds tools for various use cases:
 * Knowledge Lookup (RAG)
 * Checking Calendar Availability (using Cal.com)

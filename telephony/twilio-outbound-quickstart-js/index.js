@@ -1,20 +1,8 @@
-// ------------------------------------------------------------
-// Step 1:  Check if twilio node library is installed
-// ------------------------------------------------------------
-let twilio;
-try {
-    twilio = require('twilio');
-} catch (error) {
-    console.error('❌ Twilio library not found!');
-    console.error('📦 Please install it by running: npm install twilio');
-    console.error('💡 Then run this script again.');
-    process.exit(1);
-}
-
-const https = require('https');
+import twilio from 'twilio';
+import https from 'https';
 
 // ------------------------------------------------------------
-// Step 2:  Configure Twilio account and destination number
+// Step 1:  Configure Twilio account and destination number
 // ------------------------------------------------------------
 const TWILIO_ACCOUNT_SID = 'your_twilio_account_sid_here';
 const TWILIO_AUTH_TOKEN = 'your_twilio_auth_token_here';
@@ -22,7 +10,9 @@ const TWILIO_PHONE_NUMBER = 'your_twilio_phone_number_here';
 const DESTINATION_PHONE_NUMBER = 'the_destination_phone_number_here';
 
 // ------------------------------------------------------------
-// Step 3:  Configure Ultravox API key
+// Step 2:  Configure Ultravox API key
+//
+// Optional: Modify the system prompt
 // ------------------------------------------------------------
 const ULTRAVOX_API_KEY = 'your_ultravox_api_key_here';
 const SYSTEM_PROMPT = 'Your name is Steve and you are calling a person on the phone. Ask them their name and see how they are doing.';
@@ -36,8 +26,7 @@ const ULTRAVOX_CALL_CONFIG = {
     medium: { twilio: {} }                  // Use twilio medium
 };
 
-const ULTRAVOX_API_URL = 'https://api.ultravox.ai/api/calls';
-
+// Validates all required config vars are set
 function validateConfiguration() {
     const requiredConfig = [
         { name: 'TWILIO_ACCOUNT_SID', value: TWILIO_ACCOUNT_SID, pattern: /^AC[a-zA-Z0-9]{32}$/ },
@@ -65,13 +54,17 @@ function validateConfiguration() {
         console.error('   • TWILIO_AUTH_TOKEN should be 32 characters');
         console.error('   • Phone numbers should be in E.164 format (e.g., +1234567890)');
         console.error('   • ULTRAVOX_API_KEY should be 8 chars + period + 32 chars (e.g., Zk9Ht7Lm.wX7pN9fM3kLj6tRq2bGhA8yE5cZvD4sT)');
+        console.error('\n📦 If you get module import errors, install dependencies with:');
+        console.error('   npm install twilio');
         process.exit(1);
     }
 
     console.log('✅ Configuration validation passed!');
 }
 
+// Creates the Ultravox call using the above config
 async function createUltravoxCall() {
+    const ULTRAVOX_API_URL = 'https://api.ultravox.ai/api/calls';
     const request = https.request(ULTRAVOX_API_URL, {
         method: 'POST',
         headers: {
@@ -105,6 +98,7 @@ async function createUltravoxCall() {
     });
 }
 
+// Starts the program and makes the call
 async function main() {
     console.log('🚀 Starting Outbound Ultravox Voice AI Phone Call...\n');
     validateConfiguration();
@@ -150,6 +144,7 @@ async function main() {
         console.error('   • Ensure phone numbers are in E.164 format (+1234567890)');
         console.error('   • Verify your Twilio account has sufficient balance');
         console.error('   • Check that your Ultravox API key is valid');
+        console.error('   • If you get import errors, run: npm install twilio');
     }
 }
 
