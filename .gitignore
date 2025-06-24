@@ -1,10 +1,15 @@
 # environment variables
 .env
-.env.production
-.env.local
+.env*.production
+.env*.local
 
 # node
 node_modules
+
+# Next.js
+.next/
+out/
+.vercel
 
 # macOS-specific files
 .DS_Store
