@@ -1,5 +1,5 @@
-# ultravox-demo-template-vercel
-Template for creating Ultravox demo that gets deployed to Vercel.
+# nextjs-ts
+Ultravox web demo using Next.js and TypeScript. Deploys to Vercel.
 
 This was bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
