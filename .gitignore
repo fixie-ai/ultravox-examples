@@ -6,6 +6,11 @@
 # node
 node_modules
 
+# dist files
+dist
+dist-ssr
+*.local
+
 # Next.js
 .next/
 out/
