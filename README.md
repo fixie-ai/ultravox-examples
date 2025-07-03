@@ -6,6 +6,7 @@ A comprehensive collection of examples and solutions demonstrating how to integr
 
 | Example | Location | Description |
 |---------|----------|-------------|
+| **Agent Creator** | `agents/demo-agent-js/` | Ultravox demo agent creator. Uses JavaScript |
 | **Twilio Inbound Quickstart** | `telephony/twilio-inbound-quickstart-js/` | Simple Node.js app that connects incoming Twilio calls to an Ultravox AI agent |
 | **Twilio Incoming Advanced** | `telephony/twilio-incoming-advanced-js/` | Advanced inbound call handler with RAG, calendar booking, call transfers, and transcript processing ([video walkthrough](https://youtu.be/sa9uF5Rr9Os)) |
 | **Twilio Outbound Quickstart** | `telephony/twilio-outbound-quickstart-js/` | Make AI-powered outbound phone calls using Ultravox and Twilio |
