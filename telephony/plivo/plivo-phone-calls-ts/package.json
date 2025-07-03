@@ -1,0 +1,24 @@
+{
+  "name": "plivo-phone-calls-ts",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "call": "tsx src/outbound.ts",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "plivo": "^4.74.0",
+    "dotenv": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^20.17.7",
+    "tsx": "^4.20.2",
+    "typescript": "^5.8.3"
+  }
+}
