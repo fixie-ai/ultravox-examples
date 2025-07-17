@@ -1,0 +1,232 @@
+{
+  "name": "Ultravox Agent Call (Twilio)",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.ultravox.ai/api/agents/{{ $json.uvAgentId }}/calls ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $json.uvApiKey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "templateContext",
+              "value": "={{\n{\n  name: $json.firstName,\n  message: $json.message,\n  sender: $json.senderName\n}\n}}"
+            },
+            {
+              "name": "medium",
+              "value": "={{\n{\n  twilio: {}\n}\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        940,
+        240
+      ],
+      "id": "78c1d018-5da2-4861-9799-3bafb28cb1df",
+      "name": "Create Ultravox Call"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36d037bf-140a-4c0f-974d-20faab2f23c2",
+              "name": "Ultravox API Key",
+              "value": "<todo_your_key_here>",
+              "type": "string"
+            },
+            {
+              "id": "3281eadf-55e5-4aa5-b1c6-7d676d5be3ec",
+              "name": "Ultravox Agent ID",
+              "value": "<todo_your_agent_id_here>",
+              "type": "string"
+            },
+            {
+              "id": "bbda4e33-1520-4973-80d8-957480e60a81",
+              "name": "Twilio Phone Number",
+              "value": "<todo_your_twilio_number_here>",
+              "type": "string"
+            },
+            {
+              "id": "a5f3eaec-1516-485f-99b8-81fca977fcbf",
+              "name": "First Name",
+              "value": "<todo_first_name_here>",
+              "type": "string"
+            },
+            {
+              "id": "7e031906-ae2b-4c02-9e11-43ff39a84351",
+              "name": "Phone Number",
+              "value": "<todo_destination_phone_number_here>",
+              "type": "string"
+            },
+            {
+              "id": "b62d6c93-ea1a-478a-ad3b-a1dcef8ac603",
+              "name": "Sender Name",
+              "value": "<todo_sender_name_here>",
+              "type": "string"
+            },
+            {
+              "id": "6b7415fb-2a6a-4ec2-8e20-e5f353037dd4",
+              "name": "Message",
+              "value": "<todo_message_here>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        -120
+      ],
+      "id": "b73a9fb5-c949-448f-a682-156d6a1172dc",
+      "name": "Set Parameters",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "call",
+        "from": "={{ $('All Params').item.json.twilioPhoneNumber }}",
+        "to": "={{ $('All Params').item.json.phoneNumber  }}",
+        "twiml": true,
+        "message": "=<Response><Connect><Stream url=\"{{ $json.joinUrl }}\"/></Connect></Response> ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        240
+      ],
+      "id": "594acf51-dd2f-4985-b2dd-01a52233d3d1",
+      "name": "Make Twilio Call",
+      "credentials": {
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        260,
+        240
+      ],
+      "id": "49e202f2-e983-4931-b62c-7d36a6453989",
+      "name": "Start Manually"
+    },
+    {
+      "parameters": {
+        "content": "## Step 1:  Set Up\n1. Configure the \"Make Twilio Call\" node with your Twilio credentials.\n1. Add data for all parameters in the \"Set Parameters\" node.",
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -120
+      ],
+      "id": "1acccf0f-3c2f-4fd9-804e-06e231311efa",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validate all required input parameters\n\nlet callFlowData = {};\n\n// Ultravox API Key\nif ($input.first().json['Ultravox API Key']) {\n  callFlowData.uvApiKey = $input.first().json['Ultravox API Key'];\n} else {\n  throw new Error(\"Missing Ultravox API Key\");\n}\n\n// Ultravox Agent ID\nif ($input.first().json['Ultravox Agent ID']) {\n  callFlowData.uvAgentId = $input.first().json['Ultravox Agent ID'];\n} else {\n  throw new Error(\"Missing Ultravox Agent ID\");\n}\n\n// Twilio Phone Number\nif ($input.first().json['Twilio Phone Number']) {\n  callFlowData.twilioPhoneNumber = $input.first().json['Twilio Phone Number'];\n} else {\n  throw new Error(\"Missing Twilio Phone Number\");\n}\n\n// First Name\nif ($input.first().json['First Name']) {\n  callFlowData.firstName = $input.first().json['First Name'];\n} else {\n  throw new Error(\"Missing First Name\");\n}\n\n// Phone Number\nif ($input.first().json['Phone Number']) {\n  callFlowData.phoneNumber = $input.first().json['Phone Number'];\n} else {\n  throw new Error(\"Missing Phone Number\");\n}\n\n// Sender Name\nif ($input.first().json['Sender Name']) {\n  callFlowData.senderName = $input.first().json['Sender Name'];\n} else {\n  throw new Error(\"Missing Sender Name\");\n}\n\n// Message\nif ($input.first().json['Message']) {\n  callFlowData.message = $input.first().json['Message'];\n} else {\n  throw new Error(\"Missing Message\");\n}\n\nreturn callFlowData;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        240
+      ],
+      "id": "dda040cd-27a4-4d12-9f17-52dd4b678a09",
+      "name": "All Params"
+    },
+    {
+      "parameters": {
+        "content": "## Step 2:  Run Workflow\n1. Click \"Start Manually\"",
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        220
+      ],
+      "id": "65fde7f4-313c-4c8c-a998-7c9daeaa1865",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Create Ultravox Call": {
+      "main": [
+        [
+          {
+            "node": "Make Twilio Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Parameters": {
+      "main": [
+        [
+          {
+            "node": "All Params",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Manually": {
+      "main": [
+        [
+          {
+            "node": "Set Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Params": {
+      "main": [
+        [
+          {
+            "node": "Create Ultravox Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5a7af8b1-b933-4301-9ee0-65de3dd9f9e7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "37194c2aa9fba90b8dc545baf209bf74fcaeffa413bba2e93d62604aead717b7"
+  },
+  "id": "nY20EB4Gx6b0eQql",
+  "tags": []
+}
