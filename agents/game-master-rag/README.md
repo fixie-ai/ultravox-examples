@@ -19,7 +19,7 @@ Before starting, ensure you have:
 
 You have just created a new corpus (AKA collection). In step 2, you will add a new source.
 
-![Screenshot](./add-new-corpus-source.png)
+![Screenshot](./images/add-new-corpus-source.png)
 
 ### Step 2: Add Euchre Card Game Source
 1. Enter source name: `Euchre`
@@ -28,7 +28,7 @@ You have just created a new corpus (AKA collection). In step 2, you will add a n
 1. Click `+ Add URL` and enter `https://www.pagat.com/euchre/euchre.html`
 1. Click `Save`
 
-![Screenshot](./euchre-source.png)
+![Screenshot](./images/euchre-source.png)
 
 Ultravox will now go crawl the URL and bring in the content.
 
@@ -36,7 +36,7 @@ Ultravox will now go crawl the URL and bring in the content.
 * After you add the source you will see the status as "PROCESSING" while Ultravox crawls the URL and generates embeddings in a vector DB.
 * Once the status shows "READY", the corpus can be used for queries.
 
-![Screenshot](./processing-source.png)
+![Screenshot](./images/processing-source.png)
 
 While you wait for the Euchre content to process, go ahead and add the remaining sources.
 
@@ -51,7 +51,7 @@ While you wait for the Euchre content to process, go ahead and add the remaining
 
 The corpus will be ready when you see "READY" for the corpus and all sources:
 
-![Screenshot](./corpus-ready.png)
+![Screenshot](./images/corpus-ready.png)
 
 ## Part 2: Create the Game Master Agent
 
