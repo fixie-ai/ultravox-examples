@@ -106,6 +106,7 @@ This demo showcases how to integrate Ultravox into a web application to assist u
           First, call the submitForm tool.
           Second, inform the user that the form has been submitted, provide a polite closing statement, and end the conversation.
           Example: "Perfect! Your form has been submitted. Have a great day!"
+      Here are the form fields for the user: {{form_fields}}
       ```
 4.  **Create Tools in Ultravox**:
     - Go to the [Ultravox New Tool Tab](https://app.ultravox.ai/tools/new?pageSize=10&tab=defaults) and create the following tools for the agent:
@@ -114,9 +115,19 @@ This demo showcases how to integrate Ultravox into a web application to assist u
         - **Tool Type**: Client (tool registered in @page.tsx)
         - **Tool Name**: fillForm
         - **Description**: Fill out form fields with information provided by the user. You can pass any key-value pair.
-        - **Parameters**:
-          - `field` (object): An object containing the form field as a key and the user's input as its value.
-          - required? yes
+        - **Parameter**:
+          - `field`: An object containing the form field as a key and the user's input as its value.
+          - dynamic
+          - type: custom
+          - location: body
+          - required: yes
+          - schema: {
+                      "description": "An object containing the form field as a key and the user's input as its value.",
+                      "type": "object",
+                      "properties": {
+                        "additionalProperties": true
+                      }
+                    }
 
       **`submitForm` Tool**:
         - **Tool Type**: Client (tool registered in @page.tsx)
