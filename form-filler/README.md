@@ -1,6 +1,6 @@
 # Ultravox Form Assistant Demo
 
-This demo showcases how to integrate the Ultravox voice AI into a web application to assist users in filling out a form. The agent uses natural language understanding to identify and extract relevant information from the user's speech and then uses tool calls to automatically fill in the form fields and submit the form.
+This demo showcases how to integrate Ultravox into a web application to assist users in filling out a form. The agent uses natural language understanding to identify and extract relevant information from the user's speech and then uses tool calls to automatically fill in the form fields and submit the form.
 
 ## How It Works
 
@@ -24,10 +24,10 @@ This demo showcases how to integrate the Ultravox voice AI into a web applicatio
 
 ### Setup
 
-1.  **Clone the Repository**:
+1.  **Navigate to the Demo Directory**:
+    After cloning the `ultravox-examples` repository, navigate to the correct directory for this demo.
     ```bash
-    git clone https://github.com/ultravox/form-demo.git
-    cd form-demo
+    cd agents/form-filler
     ```
 
 2.  **Install Dependencies**:
@@ -127,7 +127,7 @@ This demo showcases how to integrate the Ultravox voice AI into a web applicatio
 
 5.  **Configure Environment Variables**:
 
-    Create a `.env.local` file in the root of the project and add your Ultravox API key and agent ID:
+    Create a `.env.local` file in the `agents/form-filler` directory and add your Ultravox API key and agent ID:
     ```
     ULTRAVOX_API_KEY=your_api_key
     ULTRAVOX_AGENT_ID=your_agent_id
