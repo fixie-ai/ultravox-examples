@@ -1,6 +1,6 @@
 # Ultravox Form Assistant Demo
 
-This demo showcases how to integrate Ultravox into a web application to assist users in filling out a form. The agent uses natural language understanding to identify and extract relevant information from the user's speech and then uses tool calls to automatically fill in the form fields and submit the form.
+This demo showcases how to integrate an agent into a web application using Ultravox's JavaScript SDK to assist users in filling out a form. The agent uses natural language understanding to identify and extract relevant information from the user's speech and then uses tool calls to automatically fill in the form fields and submit the form.
 
 ## How It Works
 
