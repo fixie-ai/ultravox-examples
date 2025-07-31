@@ -130,7 +130,7 @@ This demo showcases how to integrate Ultravox into a web application to assist u
     Create a `.env.local` file in the `agents/form-filler` directory and add your Ultravox API key and agent ID:
     ```
     ULTRAVOX_API_KEY=your_api_key
-    ULTRAVOX_AGENT_ID=your_agent_id
+    NEXT_PUBLIC_ULTRAVOX_AGENT_ID=your_agent_id
     ```
 
 6.  **Run the Development Server**:
