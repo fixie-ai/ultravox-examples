@@ -8,7 +8,7 @@ A comprehensive collection of examples and solutions demonstrating how to integr
 |-----------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
 | **Agent Creator**           | `agents/demo-agent-js/`       | Ultravox demo agent creator. Uses JavaScript and shows how to create a simple agent.                                          |
 | **No Code Outbound Caller** | `agents/n8n-outbound-caller/` | No-code agent that makes outbound calls using n8n and Twilio. Agent configured via Ultravox web app with workflow automation. |
-
+| **Form Filler**           | `agents/form-filler/`       | Integrate an agent into a web app to assist users in filling out a form. Agent and tools configured via Ultravox web app. |
 ## Ultravox + Telephony
 
 These all show how to use various telephony providers with Ultravox and demonstrate having agents make and receive calls along with how to do call transfers.
