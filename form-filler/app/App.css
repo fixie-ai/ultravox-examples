@@ -1,0 +1,245 @@
+.App {
+    min-height: 100vh;
+    background-color: #111;
+    padding: 20px;
+    color: #fff;
+  }
+  
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+  }
+  
+  .talk-button {
+    background-color: #fff;
+    color: #111;
+    border: none;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    min-width: 120px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .talk-button:hover {
+    background-color: #eee;
+    color: #111;
+  }
+  
+  .talk-button:active {
+    background-color: #ddd;
+    color: #111;
+  }
+  
+  .google-form {
+    padding: 32px;
+  }
+  
+  .form-header {
+    text-align: center;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #e8eaed;
+    padding-bottom: 24px;
+  }
+  
+  .form-header h1 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0 0 8px 0;
+  }
+  
+  .form-header p {
+    color: #ccc;
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .form-section {
+    margin-bottom: 32px;
+  }
+  
+  .question-container {
+    margin-bottom: 24px;
+  }
+  
+  .question-label {
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    line-height: 20px;
+  }
+  
+  .question-description {
+    color: #ccc;
+    font-size: 12px;
+    margin: 0 0 8px 0;
+    font-weight: 400;
+  }
+  
+  .required {
+    color: #ff5c5c;
+    margin-left: 4px;
+  }
+  
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #181818;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .form-input:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: #4285f4;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+  }
+  
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: #888;
+  }
+  
+  .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+  }
+  
+  .radio-group input[type="radio"] {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    accent-color: #4285f4;
+    cursor: pointer;
+  }
+  
+  .radio-group input[type="radio"]:checked {
+    background-color: #4285f4;
+    border-color: #4285f4;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+  }
+  
+  .checkbox-group input[type="checkbox"] {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    accent-color: #4285f4;
+    cursor: pointer;
+  }
+  
+  .checkbox-group input[type="checkbox"]:checked {
+    background-color: #4285f4;
+    border-color: #4285f4;
+  }
+  
+  .form-actions {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 1px solid #333;
+  }
+  
+  .submit-button {
+    background-color: #fff;
+    color: #111;
+    border: none;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    min-width: 120px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .submit-button:hover {
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+  }
+  
+  .submit-button:disabled {
+    background-color: #f1f3f4;
+    border-color: #f1f3f4;
+    color: #9aa0a6;
+    cursor: not-allowed;
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .App {
+      padding: 10px;
+    }
+    
+    .google-form {
+      padding: 24px 16px;
+    }
+    
+    .form-header h1 {
+      font-size: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .google-form {
+      padding: 16px 12px;
+    }
+    
+    .form-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+    }
+    
+    .question-container {
+      margin-bottom: 20px;
+    }
+  }
+  
