@@ -8,7 +8,9 @@ A comprehensive collection of examples and solutions demonstrating how to integr
 |-----------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
 | **Agent Creator**           | `agents/demo-agent-js/`       | Ultravox demo agent creator. Uses JavaScript and shows how to create a simple agent.                                          |
 | **No Code Outbound Caller** | `agents/n8n-outbound-caller/` | No-code agent that makes outbound calls using n8n and Twilio. Agent configured via Ultravox web app with workflow automation. |
-| **Form Filler**           | `agents/form-filler/`       | Integrate an agent into a web app to assist users in filling out a form. Agent and tools configured via Ultravox web app. |
+| **Form Filler**             | `agents/form-filler/`         | Integrate an agent into a web app to assist users in filling out a form. Agent and tools configured via Ultravox web app.     |
+| **Game Master (RAG)**       | `agents/game-master-rag/`     | Create an agent that uses RAG to suggest games to play as well as provide game rules.                                         |
+
 ## Ultravox + Telephony
 
 These all show how to use various telephony providers with Ultravox and demonstrate having agents make and receive calls along with how to do call transfers.
@@ -21,7 +23,6 @@ These all show how to use various telephony providers with Ultravox and demonstr
 | **Twilio Call Transfer**       | `telephony/twilio-call-transfer-ts/`       | How to implement call transfers from AI agent to a human when using Twilio.                                                                              |
 | **No Code Outbound Caller**    | `agents/n8n-outbound-caller/`              | No-code agent that makes outbound calls using n8n and Twilio. Agent configured via Ultravox web app with workflow automation.                            |
 | **Plivo Calls**                | `telephony/plivo/plivo-phone-calls-ts/`.   | Make outbound calls and receive inbound calls with Plivo. Uses TypeScript.                                                                               |
-
 
 ## Ultravox + Web Apps
 How to use the Ultravox SDK to integrate voice AI calls into web apps.

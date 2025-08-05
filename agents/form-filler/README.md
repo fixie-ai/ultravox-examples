@@ -35,7 +35,41 @@ This demo showcases how to integrate an agent into a web application using Ultra
     npm install
     ```
 
-3.  **Create an Agent in Ultravox**:
+3.  **Create Tools in Ultravox**:
+    - Open the [Ultravox New Tool](https://app.ultravox.ai/tools/new) tab and create the following tools:
+
+      **`fillForm` Tool**:
+        - **Tool Type**: `Client`
+        - **Tool Name**: `fillForm`
+        - **Description**: `Fill out form fields with information provided by the user. You can pass any key-value pair.`
+        - **Parameter**:
+          - Parameter Name: `field`
+          - Description: `An object containing the form field as a key and the user's input as its value.`
+          - Dynamic
+          - Type: `Custom`
+          - Location: `Body`
+          - Required: `Yes`
+          - Schema:
+          ```json
+          {
+            "description": "An object containing the form field as a key and the user's input as its value.",
+            "type": "object",
+            "properties": {
+              "additionalProperties": true
+            }
+          }
+          ```
+
+      **`submitForm` Tool**:
+        - **Tool Type**: `Client`
+        - **Tool Name**: `submitForm`
+        - **Description**: `Submit the form after all required fields are filled and validated.`
+    
+    - Note: These tools are registered with the Ultravox SDK in page.tsx
+
+    Next we will create the agent and add the tools we just created.
+
+4.  **Create an Agent in Ultravox**:
 
     - Go to the [Ultravox New Agent Page](https://app.ultravox.ai/agents/new) and create a new agent.
     - Add the following system prompt:
@@ -108,33 +142,6 @@ This demo showcases how to integrate an agent into a web application using Ultra
           Example: "Perfect! Your form has been submitted. Have a great day!"
       Here are the form fields for the user: {{form_fields}}
       ```
-4.  **Create Tools in Ultravox**:
-    - Go to the [Ultravox New Tool Tab](https://app.ultravox.ai/tools/new?pageSize=10&tab=defaults) and create the following tools for the agent:
-
-      **`fillForm` Tool**:
-        - **Tool Type**: Client (tool registered in @page.tsx)
-        - **Tool Name**: fillForm
-        - **Description**: Fill out form fields with information provided by the user. You can pass any key-value pair.
-        - **Parameter**:
-          - `field`: An object containing the form field as a key and the user's input as its value.
-          - dynamic
-          - type: custom
-          - location: body
-          - required: yes
-          - schema: {
-                      "description": "An object containing the form field as a key and the user's input as its value.",
-                      "type": "object",
-                      "properties": {
-                        "additionalProperties": true
-                      }
-                    }
-
-      **`submitForm` Tool**:
-        - **Tool Type**: Client (tool registered in @page.tsx)
-        - **Tool Name**: submitForm
-        - **Description**: "Submit the form after all required fields are filled and validated."
-    
-    - Add these tools to the agent you have created.
 
 5.  **Configure Environment Variables**:
 
