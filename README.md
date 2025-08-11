@@ -4,12 +4,13 @@ A comprehensive collection of examples and solutions demonstrating how to integr
 
 ## Agents
 
-| Example                     | Location                      | Description                                                                                                                   |
-|-----------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| **Agent Creator**           | `agents/demo-agent-js/`       | Ultravox demo agent creator. Uses JavaScript and shows how to create a simple agent.                                          |
-| **No Code Outbound Caller** | `agents/n8n-outbound-caller/` | No-code agent that makes outbound calls using n8n and Twilio. Agent configured via Ultravox web app with workflow automation. |
-| **Form Filler**             | `agents/form-filler/`         | Integrate an agent into a web app to assist users in filling out a form. Agent and tools configured via Ultravox web app.     |
-| **Game Master (RAG)**       | `agents/game-master-rag/`     | Create an agent that uses RAG to suggest games to play as well as provide game rules.                                         |
+| Example                     | Location                               | Description                                                                                                                   |
+|-----------------------------|----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| **Agent Creator**           | `agents/demo-agent-js/`                | Ultravox demo agent creator. Uses JavaScript and shows how to create a simple agent.                                          |
+| **No Code Outbound Caller** | `agents/n8n-outbound-caller/`          | No-code agent that makes outbound calls using n8n and Twilio. Agent configured via Ultravox web app with workflow automation. |
+| **Form Filler**             | `agents/form-filler/`                  | Integrate an agent into a web app to assist users in filling out a form. Agent and tools configured via Ultravox web app.     |
+| **Game Master (RAG)**       | `agents/game-master-rag/`              | Create an agent that uses RAG to suggest games to play as well as provide game rules.                                         |
+| **Inactivity Messages**     | `agents/agent-inactivity-messages-js/` | Create an agent that uses RAG to suggest games to play as well as provide game rules.                                         |
 
 ## Ultravox + Telephony
 
