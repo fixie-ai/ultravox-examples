@@ -1,0 +1,22 @@
+{
+  "name": "pronunciation-dictionary-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Create, update, delete, and preview an Inworld TTS 2 pronunciation dictionary",
+  "type": "module",
+  "scripts": {
+    "inworld": "tsx src/inworld/cli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
