@@ -1,0 +1,21 @@
+{
+  "name": "Gandr-Mia",
+  "description": "Gandr TTS voice gandr-mia via the OpenAI compatible speech endpoint at tts.gandr.ai",
+  "externalVoice": {
+    "generic": {
+      "url": "https://tts.gandr.ai/v1/audio/speech",
+      "headers": {
+        "Authorization": "Bearer YOUR_GANDR_API_KEY",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "model": "tts-1",
+        "voice": "gandr-mia",
+        "input": "{text}",
+        "response_format": "pcm"
+      },
+      "responseSampleRate": 24000,
+      "responseMimeType": "audio/l16"
+    }
+  }
+}

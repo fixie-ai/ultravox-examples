@@ -33,6 +33,13 @@ How to use the Ultravox SDK to integrate voice AI calls into web apps.
 | **Web Quickstart**          | `web/web-quickstart.html` | Single HTML file for quick Ultravox web integration testing (development only). |
 | **Next.js TypeScript Demo** | `web/nextjs-ts/`          | Production-ready web app with TypeScript, deployable to Vercel.                 |
 
+## Custom TTS Voices
+How to bring your own TTS provider to Ultravox using external voices.
+
+| Example                  | Location                     | Description                                                            |
+|--------------------------|------------------------------|------------------------------------------------------------------------|
+| **Gandr External Voice** | `voices/gandr-external-tts/` | Use Gandr TTS voices in Ultravox calls via the generic external voice. |
+
 ## 📚 Additional Resources
 
 - [Ultravox Documentation](https://docs.ultravox.ai)
