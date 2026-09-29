@@ -59,6 +59,17 @@ export class InworldClient {
     return all;
   }
 
+  /**
+   * Turns a dictionary ID into its full resource name. Accepts the bare ID
+   * (the UUID at the end of the name) or a full
+   * "workspaces/{ws}/pronunciationDictionaries/{uuid}" name, returned as-is.
+   */
+  dictionaryName(idOrName: string): string {
+    return idOrName.startsWith("workspaces/")
+      ? idOrName
+      : `${this.parent}/pronunciationDictionaries/${idOrName}`;
+  }
+
   /** Gets one dictionary by resource name ("workspaces/{ws}/pronunciationDictionaries/{uuid}"). */
   getDictionary(name: string): Promise<PronunciationDictionary> {
     return this.request<PronunciationDictionary>("GET", `/pronunciations/v1/${name}`);
