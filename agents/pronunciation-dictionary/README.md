@@ -5,8 +5,9 @@ names, brands, and place names the model would otherwise mispronounce. You
 store the dictionary once in your Inworld workspace and then refer to it by
 name in Ultravox.
 
-This example manages a dictionary through the Inworld API: create it, look at
-it, update it, delete it, and synthesize a preview MP3 to hear it in use.
+This example manages a dictionary through the Inworld API (create it, look at
+it, update it, delete it, and synthesize a preview MP3 to hear it in use), then
+adds an Ultravox voice that uses it.
 
 ## What you need
 
@@ -15,15 +16,16 @@ it, update it, delete it, and synthesize a preview MP3 to hear it in use.
   and the **ID of the workspace** that will own the dictionary.
 - **Access to the pronunciation dictionary API.** If requests fail with HTTP
   403, ask your Inworld contact to enable it for your workspace.
+- **For the Ultravox voice:** an [Ultravox API key](https://app.ultravox.ai/settings).
 
 ## Setup
 
 ```bash
 npm install
-cp .env.example .env   # then set INWORLD_API_KEY and INWORLD_WORKSPACE
+cp .env.example .env   # then set INWORLD_API_KEY and INWORLD_WORKSPACE (and ULTRAVOX_API_KEY)
 ```
 
-## Commands
+## Inworld commands
 
 ```bash
 npm run inworld -- create             # create the dictionary from src/dictionary.ts
@@ -31,7 +33,7 @@ npm run inworld -- get                # show it and its entries
 npm run inworld -- list               # list every dictionary in the workspace
 npm run inworld -- update             # replace its entries with src/dictionary.ts
 npm run inworld -- preview            # synthesize preview.mp3 using the dictionary
-npm run inworld -- preview "Aloha from Kihei"   # ...with your own text
+npm run inworld -- preview "Siobhan loves her Vyta"   # ...with your own text
 npm run inworld -- delete             # delete it
 npm run typecheck
 ```
@@ -47,6 +49,34 @@ npm run typecheck
 - **Typical loop.** Edit `src/dictionary.ts`, run `update`, run `preview`,
   listen, repeat.
 
+## Add the voice to Ultravox
+
+```bash
+npm run ultravox -- create-voice                          # uses this example's dictionary
+npm run ultravox -- create-voice --dictionary <id>        # uses a specific dictionary
+npm run ultravox -- create-voice -d <id1> -d <id2> --name my-voice
+```
+
+`create-voice` adds an Ultravox voice that speaks with the Inworld voice and
+model from `INWORLD_VOICE_ID` and `INWORLD_MODEL_ID` (default `Sarah` on
+`inworld-tts-2`) and applies your pronunciation dictionaries. It prints the new
+voice's ID for use in an agent or call.
+
+- **Choosing dictionaries.** With no `--dictionary`, it uses this example's
+  dictionary (found by display name). If your workspace has several, run
+  `npm run inworld -- list` and pass the one you want with `--dictionary`. The
+  ID is the UUID at the end of the dictionary's name; the full
+  `workspaces/{ws}/pronunciationDictionaries/{uuid}` name works too. Repeat
+  `--dictionary` for up to three, in priority order (the first one defining a
+  word wins).
+- **Voice name.** `--name` or `ULTRAVOX_VOICE_NAME` (default
+  `sarah-pronunciation-example`): letters, digits, `_` and `-` only. Running
+  again with the same name updates that voice instead of adding another.
+- **Inworld key on your Ultravox account.** The voice runs on the Inworld key
+  saved in your Ultravox account (Settings, TTS API keys), and that key must be
+  able to read the dictionaries. The command checks this first. Set
+  `ULTRAVOX_SET_INWORLD_KEY=true` to have it save `INWORLD_API_KEY` there for you.
+
 ## Files
 
 ```
@@ -57,10 +87,13 @@ pronunciation-dictionary/
 └── src/
     ├── dictionary.ts     # the dictionary entries and preview text: edit these
     ├── inworld/
-    │   ├── cli.ts        # the commands above
+    │   ├── cli.ts        # the Inworld commands
     │   ├── client.ts     # small Inworld API client (dictionaries + TTS)
     │   ├── settings.ts   # reads .env
     │   └── types.ts      # request/response types
+    ├── ultravox/
+    │   ├── cli.ts        # npm run ultravox -- create-voice
+    │   └── types.ts      # Ultravox voice types
     ├── env.ts
     └── http.ts
 ```
@@ -71,7 +104,7 @@ and `types.ts` into your own code.
 ## Writing dictionary entries
 
 ```ts
-{ displayHeadword: "Kihei", languageCode: "en-US", phoneSymbols: ["ˈ", "k", "i", "i", "h", "e", "ɪ"] }
+{ displayHeadword: "Vyta", languageCode: "en-US", phoneSymbols: ["ˈ", "v", "a", "ɪ", "t", "ə"] }
 ```
 
 - **`displayHeadword`**: one word, up to 128 characters. Phrases are rejected.
@@ -82,7 +115,7 @@ and `types.ts` into your own code.
   - **Stress and length.** Stress marks `ˈ` and `ˌ` are accepted as their own
     tokens, and the long vowel `iː` as one token.
 - **How phones are used.** At synthesis the phones are joined back into one IPA
-  string, e.g. `/ˈkiiheɪ/`, so splitting a diphthong doesn't change how it sounds.
+  string, e.g. `/ˈvaɪtə/`, so splitting a diphthong doesn't change how it sounds.
 - **Uniqueness**: each language + headword pair may appear once per dictionary.
 - **Size**: at most 1,000 entries and 512 KiB per dictionary.
 - **Errors**: every entry is validated, and one invalid entry fails the whole
@@ -120,7 +153,7 @@ Base URL: `https://api.inworld.ai`. Auth: `Authorization: Basic <Base64 credenti
 ```json
 POST /tts/v1/voice
 {
-  "text": "Your ride leaves Kahului and heads to Kihei.",
+  "text": "Your Vyta headset ships from our Worcester warehouse today.",
   "voiceId": "Sarah",
   "modelId": "inworld-tts-2",
   "language": "en-US",
