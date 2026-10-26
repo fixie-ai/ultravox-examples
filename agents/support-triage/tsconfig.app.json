@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    "typeRoots": [
+      "./node_modules/.pnpm/@types",
+      "./node_modules/@types"
+    ],
+    // No node types: the debugger runs in the browser. TypeScript follows its imports into agent/, so agent code
+    // the debugger uses must be browser-safe too. (tsconfig.server.json checks agent/ and the tests as Node code.)
+    "types": ["react", "react-dom"]
+  },
+  "include": ["devtools/web", "devtools/shared"],
+  "exclude": ["**/*.test.ts"]
+}
