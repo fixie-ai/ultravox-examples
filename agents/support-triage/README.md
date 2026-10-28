@@ -1,11 +1,8 @@
 # Support triage agent
 
-An inbound support agent for **Acme Internet**, a fictional internet provider. It greets the caller, finds their
-account, works out what kind of problem they have, asks only for the details it still needs, walks them through a
-knowledge-base fix, and creates a ticket for a person when the fix doesn't work.
+An inbound support agent for **Acme Internet**, a fictional internet provider. It greets the caller, finds their account, works out what kind of problem they have, asks only for the details it still needs, walks them through a knowledge-base fix, and creates a ticket for a person when the fix doesn't work.
 
-It runs on Ultravox like any agent you'd deploy (web, phone or text), and it comes with a web debugger that shows,
-live, why the call moves the way it does.
+It runs on Ultravox like any agent you'd deploy (web, phone or text), and it comes with a web debugger that shows, live, why the call moves the way it does.
 
 ## What this example shows
 

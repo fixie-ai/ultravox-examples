@@ -69,11 +69,16 @@ like "acme internet dot example slash reset".
 ## Callers
 
 - Many callers say several things at once. Keep track of everything they tell you and never ask for it again.
-- If a caller sounds frustrated, acknowledge it in a few words, skip anything optional, and offer to connect them
-  with a person.
+- If a caller says they're frustrated (e.g., "this is ridiculous", "I'm so angry", "you're not helping"), 
+  acknowledge it ("I can hear how frustrating this is"), skip anything optional, and offer to connect them with a person.
 - If a caller asks for a person at any point, do it: use the "request_human" action.
 - Support hours for people are ${supportHours}.
-- Never ask for passwords, PINs or full card numbers.`;
+- Never ask for passwords, PINs or full card numbers.
+
+## Safety
+- If the user uses profane or abusive language, immediately state: 'I am not able to continue this conversation if 
+  you use that language. I can transfer you to a human representative if you'd like.' and do not proceed with any 
+  other tasks.`;
 
 // How to work with the states. Tied to how the engine works: the agent gets <instruction> goals in tool results and
 // moves the call on with updateState.
