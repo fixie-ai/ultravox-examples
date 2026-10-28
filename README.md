@@ -11,6 +11,7 @@ A comprehensive collection of examples and solutions demonstrating how to integr
 | **Form Filler**             | `agents/form-filler/`                  | Integrate an agent into a web app to assist users in filling out a form. Agent and tools configured via Ultravox web app.     |
 | **Game Master (RAG)**       | `agents/game-master-rag/`              | Create an agent that uses RAG to suggest games to play as well as provide game rules.                                         |
 | **Inactivity Messages**     | `agents/agent-inactivity-messages-js/` | Create an agent that uses RAG to suggest games to play as well as provide game rules.                                         |
+| **Support Triage**          | `agents/support-triage/`               | Inbound support agent with HTTP tools, a state machine in call state, a decision model (Jev), and a data-connection debugger. |
 
 ## Ultravox + Telephony
 

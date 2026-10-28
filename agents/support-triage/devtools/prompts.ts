@@ -1,0 +1,190 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { buildContext, buildQuestions } from '../engine/decision/check';
+import { extractionPrompt, missingFieldsFor } from '../engine/decision/extraction';
+import { renderStateInstruction } from '../engine/prompt';
+import { isTerminal } from '../engine/stateMachine';
+import { buildCallTemplate } from '../engine/ultravoxTools';
+import { supportScenario } from '../agent';
+import { AnyScenario, CallData, CallState } from '../engine/types';
+import type { DecisionQuestion } from '../engine/decision/types';
+
+// ----------------------------------------------------------------------------- //
+// pnpm prompts: writes docs/prompts.md, every prompt the models in a call read, //
+// rendered exactly as they are sent: the system prompt,                       //
+// each state's instruction, the tool descriptions, the decision model's        //
+// questions and the extraction thread's prompt. A test fails when the file is  //
+// out of date, so prompt changes show up as a readable diff.                   //
+// ----------------------------------------------------------------------------- //
+
+/** A state rendered with sample call data, to show how its instruction reads. */
+interface Sample {
+  state: string;
+  label?: string;
+  callData?: CallData;
+}
+
+// Samples for the support scenario: every state, plus the variants that change the text.
+const SUPPORT_SAMPLES: Sample[] = [
+  { state: 'greeting' },
+  { state: 'identify_account', label: 'first try' },
+  { state: 'identify_account', label: 'after one failed lookup', callData: { lookup_attempts: 1 } },
+  { state: 'classify_issue', callData: { issue_summary: 'My internet keeps dropping' } },
+  { state: 'collect_details', label: 'billing, charge_amount already given', callData: { category: 'billing', details: { charge_amount: '$12' } } },
+  {
+    state: 'self_serve',
+    label: 'technical, with an article',
+    callData: { category: 'technical', kb_article: { title: 'Restart your router', steps: ['Unplug the router from power.', 'Wait 30 seconds, then plug it back in.'] } },
+  },
+  {
+    state: 'self_serve',
+    label: 'cancel_service',
+    callData: { category: 'cancel_service', kb_article: { title: 'Before you cancel', steps: ['Offer one month at half price.'] } },
+  },
+  { state: 'resolved' },
+  { state: 'escalate', label: 'not resolved', callData: { escalation_reason: 'not_resolved' } },
+  { state: 'escalate', label: 'the caller asked for a person, and is angry', callData: { escalation_reason: 'requested', frustration: 'angry' } },
+  { state: 'call_ended' },
+  { state: 'collect_details', label: 'angry caller: adds the offer of a person', callData: { category: 'technical', frustration: 'angry' } },
+];
+
+const SAMPLES: Record<string, Sample[]> = { support: SUPPORT_SAMPLES };
+
+const at = (state: string, callData: CallData = {}): CallState => ({
+  currentState: state,
+  previousState: null,
+  callData: { stateHistory: [], ...callData },
+});
+
+const block = (text: string) => `\`\`\`\n${text.trim()}\n\`\`\``;
+
+// Sample values for the placeholders in messages, e.g. the action the agent proposed.
+const SAMPLE_INPUT: Record<string, unknown> = {
+  valid: ['{valid actions}'],
+  states: ['{state}'],
+  missing: ['{field}'],
+};
+const sampleInput = new Proxy({}, { get: (_, key: string) => SAMPLE_INPUT[key] ?? `{${key}}` });
+
+/** Every message in a group (e.g. the feedback), with `{...}` placeholders for its values. */
+function describeMessages(messages: Record<string, unknown>, prefix = ''): string[] {
+  // Tags (e.g. <instruction>) would vanish in Markdown, so show those as code.
+  const show = (text: string) => (text.includes('<') ? `\`${text}\`` : text);
+  return Object.entries(messages).flatMap(([key, value]) => {
+    if (typeof value === 'string') return [`- **${prefix}${key}**: ${show(value)}`];
+    if (typeof value === 'function') return [`- **${prefix}${key}**: ${show(value(sampleInput))}`];
+    if (value && typeof value === 'object') return describeMessages(value as Record<string, unknown>, `${prefix}${key}.`);
+    return [];
+  });
+}
+
+function describeQuestion(question: DecisionQuestion): string {
+  const options = question.options.map((option) => {
+    const description = question.optionDescriptions?.[option];
+    return `  - \`${option}\`${description ? `: ${description}` : ''}`;
+  });
+  return [`- **\`${question.id}\`**: ${question.prompt}`, ...options].join('\n');
+}
+
+/** Every prompt for `scenario`, as Markdown. Deterministic, so it can be checked in and compared. */
+export function renderPrompts(scenario: AnyScenario, samples: Sample[] = SAMPLES[scenario.id] ?? []): string {
+  const states: Sample[] = samples.length ? samples : Object.keys(scenario.states).map((state) => ({ state }));
+  const out: string[] = [
+    `# Prompts: ${scenario.label}`,
+    '',
+    'Every prompt the models in a call read, rendered exactly as they are sent. Generated by `pnpm prompts` from',
+    'the code; don\'t edit this file by hand. `{...}` values come from sample call data.',
+    '',
+  ];
+
+  // 1. The system prompt, saved in the Ultravox agent.
+  const template = buildCallTemplate(scenario, { baseUrl: 'https://tools.example.com' });
+  out.push('## System prompt', '', 'Saved in the Ultravox agent.', '', block(template.systemPrompt), '');
+
+  // 2. Each state's instruction, returned to the agent as a tool result.
+  out.push('## State instructions', '', 'Returned to the agent in the result of the tool call that enters the state.', '');
+  for (const { state, label, callData } of states) {
+    out.push(`### ${state}${label ? ` (${label})` : ''}`, '');
+    out.push(block(renderStateInstruction(scenario, at(state, callData), { afterToolCall: state !== scenario.initialState })), '');
+  }
+
+  // 3. Tool descriptions: what the model reads to decide how to call each tool.
+  out.push('## Tools', '');
+  for (const tool of template.selectedTools) {
+    if (!('temporaryTool' in tool)) {
+      out.push(`- **${tool.toolName}**: built into Ultravox.`);
+      continue;
+    }
+    const { modelToolName, description, dynamicParameters = [] } = tool.temporaryTool as {
+      modelToolName: string;
+      description: string;
+      dynamicParameters?: { name: string; required?: boolean; schema: { description?: string; enum?: string[] } }[];
+    };
+    out.push(`- **${modelToolName}**: ${description}`);
+    for (const { name, required, schema } of dynamicParameters) {
+      // The action enum is already spelled out in its description.
+      const values = schema.enum && !schema.description ? `One of: ${schema.enum.join(', ')}.` : '';
+      out.push(`  - \`${name}\`${required ? ' (required)' : ''}: ${schema.description ?? values}`);
+    }
+  }
+  out.push('');
+
+  // What the agent is told as the call goes: the engine's feedback, and what the agent's own code adds.
+  const { prompts } = scenario;
+  out.push('## Messages', '', 'Added to instructions or returned as tool results as the call goes. `{...}` values are filled in at runtime.', '');
+  const groups: [string, string, Record<string, unknown> | undefined][] = [
+    ['Condition reasons', 'Why an action isn\'t allowed yet (the flow\'s conditions).', prompts.conditions],
+    ['Notes', 'Added when the decision model\'s answers call for it.', prompts.notes],
+    ['Tool results', 'Hints in tool results.', prompts.toolResults],
+    ['Feedback', 'What the engine tells the agent: rejected actions, skipped states, the observer, errors.', prompts.feedback],
+    ['Developer tools', 'Sent by the debugger, not the agent\'s code.', prompts.devtools],
+  ];
+  for (const [title, about, messages] of groups) {
+    if (messages) out.push(`### ${title}`, '', about, '', ...describeMessages(messages), '');
+  }
+
+  // 4. The decision model's questions, per state, and an example of the context it judges.
+  out.push('## Decision model (Jev)', '', 'Every check sends a context and multiple-choice questions. Questions per state:', '');
+  for (const state of Object.keys(scenario.states).filter((state) => !isTerminal(scenario, state))) {
+    out.push(`### ${state}`, '', ...buildQuestions(scenario, at(state)).map(describeQuestion), '');
+  }
+  if (scenario.extraction) {
+    const [state] = scenario.extraction.states;
+    const sample = states.find((s) => s.state === state);
+    const callState = at(state, sample?.callData);
+    out.push(
+      `### Captured answers ("jev" details mode)`,
+      '',
+      `In ${scenario.extraction.states.join(', ')}, one more question per missing field:`,
+      '',
+      ...buildQuestions(scenario, callState, 'jev').filter((q) => q.id.startsWith('field:')).map(describeQuestion),
+      ''
+    );
+    out.push(
+      '### Example context',
+      '',
+      block(
+        buildContext(scenario, callState, [
+          { speaker: 'agent', text: '{the agent\'s last question}' },
+          { speaker: 'user', text: '{what the caller said}' },
+        ])
+      ),
+      ''
+    );
+
+    // 5. The extraction thread's prompt ("extract" details mode).
+    out.push('## Extraction thread', '', `Sent to a side thread after each caller turn in ${scenario.extraction.states.join(', ')}:`, '');
+    out.push(block(extractionPrompt(scenario, missingFieldsFor(scenario, callState))), '');
+  }
+
+  return `${out.join('\n').trimEnd()}\n`;
+}
+
+export const PROMPTS_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'prompts.md');
+
+// pnpm prompts
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  fs.writeFileSync(PROMPTS_FILE, renderPrompts(supportScenario));
+  console.log(`Wrote ${path.relative(process.cwd(), PROMPTS_FILE)}`);
+}
